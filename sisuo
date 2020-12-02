@@ -1,0 +1,45 @@
+
+public class test2 implements Runnable{
+
+	private static Object o1 = new Object();
+	private static Object o2 = new Object();
+
+	public int flag = 1;
+	@Override
+	public void run() {
+		System.out.println("开始");
+		if(flag==1) {
+		synchronized(o1) {
+			   try {  
+                   Thread.sleep(500);  
+               } catch (Exception e) {  
+                   e.printStackTrace();  
+               }
+			synchronized (o2) {
+				System.out.println(flag);
+			}
+		}
+		}
+		if(flag==0) {
+			  
+			synchronized(o2) {
+				 try {  
+	                   Thread.sleep(500);  
+	               } catch (Exception e) {  
+	                   e.printStackTrace();  
+	               }
+				synchronized (o1) {
+					System.out.println(flag);
+				}
+			}}
+	}
+	
+	public static void main(String[] args) {
+				test2 t1 = new test2();
+				test2 t2 = new test2();
+				t1.flag=1;
+				t1.flag=0;
+				new Thread(t1).start();
+				new Thread(t2).start();
+	}
+}
